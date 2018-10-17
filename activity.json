@@ -1,0 +1,59 @@
+{
+  "name": "tibco-circuitbreaker",
+  "type": "flogo:activity",
+  "ref": "github.com/mashling/circuitbreaker",
+  "version": "0.0.1",
+  "title": "Invoke an Circuit Breaker Activity",
+  "description": "Invoke an Circuit Breaker",
+  "homepage": "https://github.com/TIBCOSoftware/pointlander/circuitbreaker",
+  "input":[
+    {
+      "name": "serviceName",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "operation",
+      "type": "string"
+    },
+    {
+      "name": "inputs",
+      "type": "any"
+    },
+    {
+      "name": "context",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "mode",
+      "type": "string"
+    },
+    {
+      "name": "threshold",
+      "type": "integer"
+    },
+    {
+      "name": "period",
+      "type": "integer"
+    },
+    {
+      "name": "timeout",
+      "type": "integer"
+    }
+  ],
+  "output": [
+    {
+      "name": "statusCode",
+      "type": "integer"
+    },
+    {
+      "name": "body",
+      "type": "any"
+    },
+    {
+      "name": "netError",
+      "type": "string"
+    }
+  ]
+}
