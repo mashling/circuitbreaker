@@ -17,10 +17,6 @@
       "type": "string"
     },
     {
-      "name": "inputs",
-      "type": "any"
-    },
-    {
       "name": "context",
       "type": "string",
       "required": true
@@ -40,20 +36,6 @@
     {
       "name": "timeout",
       "type": "integer"
-    }
-  ],
-  "output": [
-    {
-      "name": "statusCode",
-      "type": "integer"
-    },
-    {
-      "name": "body",
-      "type": "any"
-    },
-    {
-      "name": "netError",
-      "type": "string"
     }
   ]
 }

@@ -20,7 +20,6 @@ const (
 	ivPeriod         = "period"
 	ivTimeout        = "timeout"
 	ivTripped     = "tripped"
-	ivInputs      = "inputs"
 
 	// CircuitBreakerModeA triggers the circuit breaker when there are contiguous errors
 	CircuitBreakerModeA = "a"
@@ -42,7 +41,7 @@ type Factory struct {
 }
 
 func init() {
-	registry.Register("CircuitBreakerActivity", &Factory{})
+	registry.Register("CircuitBreaker", &Factory{})
 }
 
 type CircuitBreakerActivity struct {
@@ -80,7 +79,6 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 		ivPeriod:       context.GetInput(ivPeriod),
 		ivTimeout:    context.GetInput(ivTimeout),
 		ivTripped:      context.GetInput(ivTripped),
-		ivInputs: context.GetInput(ivInputs),
 	}
 	factory := Factory{}
 	service, err := factory.Make(serviceName, settings)
@@ -93,6 +91,7 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 	}
 	return true, nil
 }
+
 
 // InitializeCircuitBreaker creates a circuit breaker service
 func (f *Factory) Make(name string, settings map[string]interface{}) (registry.Service, error) {

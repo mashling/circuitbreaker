@@ -2,7 +2,7 @@
   "name": "CircuitBreakerGateway",
   "type": "flogo:app",
   "version": "1.0.0",
-  "description": "This is a simple proxy.",
+  "description": "Protect services with circuit breaker pattern",
   "triggers": [
     {
       "name": "circuit-breaker",
@@ -47,30 +47,18 @@
           "type": 1,
           "tasks": [
             {
-              "id": "rest_2",
-              "name": "Invoke REST Service",
-              "description": "Simple REST Activity",
+              "id": "circuitbreaker",
+              "name": "Invoke Circuit breaker",
+              "description": "Circuit breaker service",
               "type": 1,
               "activityType": "github-com-mashling-circuitbreaker",
               "activityRef": "github.com/mashling/circuitbreaker",
               "attributes": [
                 {
                   "name": "serviceName",
-                  "value": "reset",
+                  "value": "CircuitBreaker",
                   "required": true,
                   "type": "string"
-                },
-                {
-                  "name": "inputs",
-                  "value": {
-                    "method": "GET",
-                    "uri": "http://petstore.swagger.io/v2/pet/:petId",
-                    "pathParams": null,
-                    "queryParams": null,
-                    "content": null
-                  },
-                  "required": false,
-                  "type": "any"
                 },
                 {
                   "name": "operation",
@@ -83,11 +71,10 @@
                   "value": "get",
                   "required": true,
                   "type": "string"
-
                 },
                 {
                   "name": "mode",
-                  "value": null,
+                  "value": "a",
                   "required": false,
                   "type": "string"
                 },
@@ -109,19 +96,187 @@
                   "required": false,
                   "type": "integer"
                 }
+              ]
+            },
+            {
+              "id": "rest_2",
+              "name": "Invoke REST Service",
+              "description": "Simple REST Activity",
+              "type": 1,
+              "activityType": "github-com-mashling-flogoactivity",
+              "activityRef": "github.com/mashling/circuitbreaker",
+              "attributes": [
+                {
+                  "name": "serviceName",
+                  "value": "reset",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "method",
+                  "value": "GET",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "url",
+                  "value": "http://petstore.swagger.io/v2/pet/:petId",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "path",
+                  "value": null,
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "pathParams",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                },
+                {
+                  "name": "body",
+                  "value": null,
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "headers",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                },
+                {
+                  "name": "query",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                },
+                {
+                  "name": "timeout",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                }
               ],
               "inputMappings": [
                 {
                   "type": 1,
                   "value": "{T.pathParams}",
-                  "mapTo": "inputs.pathParams"
+                  "mapTo": "pathParams"
                 }
               ]
             },
             {
-              "id": "reply_5",
+              "id": "circuitbreaker_1",
+              "name": "Invoke Circuit breaker",
+              "description": "Circuit breaker service with operation as counter",
+              "type": 1,
+              "activityType": "github-com-mashling-circuitbreaker",
+              "activityRef": "github.com/mashling/circuitbreaker",
+              "attributes": [
+                {
+                  "name": "serviceName",
+                  "value": "CircuitBreaker",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "operation",
+                  "value": "counter",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "context",
+                  "value": "get",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "mode",
+                  "value": "a",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "threshold",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "period",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "timeout",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                }
+              ]
+            },
+            {
+              "id": "circuitbreaker_2",
+              "name": "Invoke Circuit breaker",
+              "description": "Circuit breaker service when operation as reset",
+              "type": 1,
+              "activityType": "github-com-mashling-circuitbreaker",
+              "activityRef": "github.com/mashling/circuitbreaker",
+              "attributes": [
+                {
+                  "name": "serviceName",
+                  "value": "CircuitBreaker",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "operation",
+                  "value": "reset",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "context",
+                  "value": "get",
+                  "required": true,
+                  "type": "string"
+                },
+                {
+                  "name": "mode",
+                  "value": "a",
+                  "required": false,
+                  "type": "string"
+                },
+                {
+                  "name": "threshold",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "period",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                },
+                {
+                  "name": "timeout",
+                  "value": null,
+                  "required": false,
+                  "type": "integer"
+                }
+              ]
+            },
+            {
+              "id": "reply_1",
               "name": "Reply (Legacy)",
-              "description": "Simple Reply Activity",
+              "description": "Simple Reply fpr tripped condition",
               "type": 1,
               "activityType": "tibco-reply",
               "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
@@ -143,12 +298,12 @@
                 "mappings": [
                   {
                     "type": 1,
-                    "value": "$activity[rest_2].outputs.status",
+                    "value": "$activity[rest_2].response.output.code",
                     "mapTo": "code"
                   },
                   {
                     "type": 1,
-                    "value": "$activity[rest_2].outputs.result",
+                    "value": "$activity[rest_2].response.body",
                     "mapTo": "data"
                   }
                 ]
@@ -158,9 +313,37 @@
           "links": [
             {
               "id": 1,
-              "from": "rest_2",
-              "to": "reply_5",
+              "from": "circuitbreaker",
+              "to": "rest_2",
               "type": 0
+            },
+            {
+              "id": 2,
+              "from": "rest_2",
+              "to": "circuitbreaker_2",
+              "type": 1,
+              "value": "($activity[rest_2].response.netError == ''"
+            },
+            {
+              "id": 3,
+              "from": "rest_2",
+              "to": "circuitbreaker_1",
+              "type": 1,
+              "value": "$activity[rest_2].response.netError != ''"
+            },
+            {
+              "id": 4,
+              "from": "circuitbreaker_1",
+              "to": "reply_1",
+              "type": 1,
+              "value": "$activity[rest_2].response.body.status == 'available'"
+            },
+            {
+              "id": 5,
+              "from": "circuitbreaker_2",
+              "to": "reply_1",
+              "type": 1,
+              "value": "$activity[rest_2].response.body.status == 'available'"
             }
           ],
           "attributes": []
