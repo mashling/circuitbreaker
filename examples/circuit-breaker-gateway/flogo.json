@@ -7,7 +7,7 @@
     {
       "name": "circuit-breaker",
       "id": "receive_http_message",
-      "ref": "github.com/mashling/circuitbreaker",
+      "ref": "github.com/TIBCOSoftware/mashling/ext/flogo/trigger/gorillamuxtrigger",
       "description": "Circuit Breaker activity",
       "settings": {
         "port": "9096"
