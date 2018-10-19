@@ -7,7 +7,7 @@
     {
       "name": "circuit-breaker",
       "id": "receive_http_message",
-      "ref": "github.com/TIBCOSoftware/mashling/ext/flogo/trigger/gorillamuxtrigger",
+      "ref": "github.com/TIBCOSoftware/flogo-contrib/trigger/rest",
       "description": "Circuit Breaker activity",
       "settings": {
         "port": "9096"
@@ -104,7 +104,7 @@
               "description": "Simple REST Activity",
               "type": 1,
               "activityType": "github-com-mashling-flogoactivity",
-              "activityRef": "github.com/mashling/httpactivity",
+              "activityRef": "github.com/mashling/circuitbreaker",
               "attributes": [
                 {
                   "name": "serviceName",
@@ -322,7 +322,7 @@
               "from": "rest_2",
               "to": "circuitbreaker_2",
               "type": 1,
-              "value": "($activity[rest_2].response.netError == ''"
+              "value": "$activity[rest_2].response.netError == ''"
             },
             {
               "id": 3,

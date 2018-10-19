@@ -310,7 +310,7 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			default:
 				return errors.New("invalid mode")
 			}
-			if c.mode == nil {
+			if c.mode == "" {
 				c.mode = mode
 			}
 		case "operation":
@@ -318,7 +318,7 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			if !ok {
 				return errors.New("operation is not a string")
 			}
-			if c.operation == nil {
+			if c.operation == "" {
 				c.operation = operation
 			}
 		case "context":
@@ -326,11 +326,11 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			if !ok {
 				return errors.New("context is not a string")
 			}
-			if c.context == nil {
+			if c.context == "" {
 				c.context = context
 			}
 		case "threshold":
-			threshold, ok := v.(float64)
+			threshold, ok := v.(int)
 			if !ok {
 				return errors.New("threshold is not a number")
 			}
@@ -338,19 +338,19 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 				c.threshold = int(threshold)
 			}
 		case "timeout":
-			timeout, ok := v.(float64)
+			timeout, ok := v.(int)
 			if !ok {
 				return errors.New("timeout is not a number")
 			}
-			if c.timeout == nil {
+			if c.timeout == 0 {
 				c.timeout = time.Duration(timeout) * time.Second
 			}
 		case "period":
-			period, ok := v.(float64)
+			period, ok := v.(int)
 			if !ok {
 				return errors.New("period is not a number")
 			}
-			if c.period == nil {
+			if c.period == 0 {
 				c.period = time.Duration(period) * time.Second
 			}
 		}
