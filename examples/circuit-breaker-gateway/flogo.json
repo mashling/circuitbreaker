@@ -282,7 +282,7 @@
               "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
               "attributes": [
                 {
-                  "name": "code",
+                  "name": "statusCode",
                   "value": 0,
                   "required": true,
                   "type": "integer"
@@ -298,12 +298,12 @@
                 "mappings": [
                   {
                     "type": 1,
-                    "value": "$activity[rest_2].response.output.code",
+                    "value": "$activity[rest_2].statusCode",
                     "mapTo": "code"
                   },
                   {
                     "type": 1,
-                    "value": "$activity[rest_2].response.body",
+                    "value": "$activity[rest_2].body",
                     "mapTo": "data"
                   }
                 ]

@@ -97,10 +97,11 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 // InitializeCircuitBreaker creates a circuit breaker service
 func (f *Factory) Make(name string, settings map[string]interface{}) (registry.Service, error) {
 	circuit := &CircuitBreaker{
-		mode:      CircuitBreakerModeA,
+		mode:      "a",
 		threshold: 5,
 		period:    60 * time.Second,
 		timeout:   60 * time.Second,
+		context: "get",
 	}
 	err := circuit.UpdateRequest(settings)
 	return circuit, err
@@ -302,6 +303,8 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			if !ok {
 				return errors.New("mode is not a string")
 			}
+			fmt.Println("value:",mode)
+
 			switch mode {
 			case CircuitBreakerModeA:
 			case CircuitBreakerModeB:
@@ -311,7 +314,7 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 				return errors.New("invalid mode")
 			}
 			if c.mode == "" {
-				c.mode = mode
+				c.mode = v
 			}
 		case "operation":
 			operation, ok := v.(string)
