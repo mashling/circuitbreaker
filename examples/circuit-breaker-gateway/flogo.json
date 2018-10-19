@@ -7,8 +7,8 @@
     {
       "name": "circuit-breaker",
       "id": "receive_http_message",
-      "ref": "github.com/TIBCOSoftware/mashling/ext/flogo/trigger/gorillamuxtrigger",
-      "description": "Simple REST Trigger",
+      "ref": "github.com/mashling/circuitbreaker",
+      "description": "Circuit Breaker activity",
       "settings": {
         "port": "9096"
       },
@@ -74,7 +74,7 @@
                 },
                 {
                   "name": "mode",
-                  "value": "CircuitBreakerModeA",
+                  "value": "a",
                   "required": false,
                   "type": "string"
                 },
