@@ -276,7 +276,7 @@
             {
               "id": "reply_1",
               "name": "Reply (Legacy)",
-              "description": "Simple Reply fpr tripped condition",
+              "description": "Simple Reply for success response",
               "type": 1,
               "activityType": "tibco-reply",
               "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
@@ -288,7 +288,7 @@
                   "type": "integer"
                 },
                 {
-                  "name": "data",
+                  "name": "body",
                   "value": null,
                   "required": false,
                   "type": "any"
@@ -336,14 +336,14 @@
               "from": "circuitbreaker_1",
               "to": "reply_1",
               "type": 1,
-              "value": "$activity[rest_2].response.body.status == 'available'"
+              "value": "$activity[rest_2].body.status == 'available'"
             },
             {
               "id": 5,
               "from": "circuitbreaker_2",
               "to": "reply_1",
               "type": 1,
-              "value": "$activity[rest_2].response.body.status == 'available'"
+              "value": "$activity[rest_2].body.status == 'available'"
             }
           ],
           "attributes": []

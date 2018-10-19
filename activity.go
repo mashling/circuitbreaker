@@ -3,22 +3,22 @@ package circuitbreaker
 import (
 	"errors"
 	"fmt"
+	"github.com/TIBCOSoftware/flogo-lib/core/activity"
+	"github.com/mashling/mashling/registry"
 	"math"
 	"math/rand"
 	"sync"
 	"time"
-	"github.com/TIBCOSoftware/flogo-lib/core/activity"
-	"github.com/mashling/mashling/registry"
 )
 
 const (
 	ivServiceName = "serviceName"
 	ivOperation   = "operation"
 	ivContext     = "context"
-	ivMode  = "mode"
-	ivThreshold      = "threshold"
-	ivPeriod         = "period"
-	ivTimeout        = "timeout"
+	ivMode        = "mode"
+	ivThreshold   = "threshold"
+	ivPeriod      = "period"
+	ivTimeout     = "timeout"
 	ivTripped     = "tripped"
 
 	// CircuitBreakerModeA triggers the circuit breaker when there are contiguous errors
@@ -72,12 +72,12 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 	}
 
 	settings := map[string]interface{}{
-		ivOperation:       context.GetInput(ivOperation),
-		ivContext: context.GetInput(ivContext),
-		ivMode:     context.GetInput(ivMode),
-		ivThreshold:        context.GetInput(ivThreshold),
-		ivPeriod:       context.GetInput(ivPeriod),
-		ivTimeout:    context.GetInput(ivTimeout),
+		ivOperation: context.GetInput(ivOperation),
+		ivContext:   context.GetInput(ivContext),
+		ivMode:      context.GetInput(ivMode),
+		ivThreshold: context.GetInput(ivThreshold),
+		ivPeriod:    context.GetInput(ivPeriod),
+		ivTimeout:   context.GetInput(ivTimeout),
 		//ivTripped:      context.GetInput(ivTripped),
 	}
 	factory := Factory{}
@@ -93,7 +93,6 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 	return true, nil
 }
 
-
 // InitializeCircuitBreaker creates a circuit breaker service
 func (f *Factory) Make(name string, settings map[string]interface{}) (registry.Service, error) {
 	circuit := &CircuitBreaker{
@@ -101,7 +100,7 @@ func (f *Factory) Make(name string, settings map[string]interface{}) (registry.S
 		threshold: 5,
 		period:    60 * time.Second,
 		timeout:   60 * time.Second,
-		context: "get",
+		context:   "get",
 	}
 	err := circuit.UpdateRequest(settings)
 	return circuit, err
@@ -191,7 +190,6 @@ func (c *CircuitBreaker) Execute() (err error) {
 	return nil
 }
 
-
 // ErrorCircuitBreakerTripped happens when the circuit breaker has tripped
 var ErrorCircuitBreakerTripped = errors.New("circuit breaker tripped")
 
@@ -199,13 +197,13 @@ var now = time.Now
 
 // CircuitBreaker is a circuit breaker service
 type CircuitBreaker struct {
-	operation 	string		`json:"operation"`
-	context 	string		`json:"context"`
-	mode 		string		`json:"mode"`
-	threshold       int		`json:"threshold"`
-	period		time.Duration	`json:"period"`
-	timeout         time.Duration	`json:"timeout"`
-	Tripped         bool 		`json:"tripped"`
+	operation string        `json:"operation"`
+	context   string        `json:"context"`
+	mode      string        `json:"mode"`
+	threshold int           `json:"threshold"`
+	period    time.Duration `json:"period"`
+	timeout   time.Duration `json:"timeout"`
+	Tripped   bool          `json:"tripped"`
 }
 
 // Record is a record of a request
@@ -262,8 +260,6 @@ func (c *CircuitBreakerContext) Probability(now time.Time) float64 {
 	return 1 / (1 + math.Exp(8*sum))
 }
 
-
-
 // GetContext gets a circuit breaker context
 func (c *CircuitBreakerContexts) GetContext(context string, threshold int) *CircuitBreakerContext {
 	context = fmt.Sprintf("%s-%d", context, threshold)
@@ -290,11 +286,10 @@ func (c *CircuitBreakerContexts) GetContext(context string, threshold int) *Circ
 	return cbContext
 }
 
-
 // UpdateRequest updates the circuit breaker service
 func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error) {
 	for k, v := range values {
-		if v == nil || v == "" || v == 0{
+		if v == nil || v == "" || v == 0 {
 			continue
 		}
 		switch k {
