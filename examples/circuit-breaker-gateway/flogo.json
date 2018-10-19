@@ -104,7 +104,7 @@
               "description": "Simple REST Activity",
               "type": 1,
               "activityType": "github-com-mashling-flogoactivity",
-              "activityRef": "github.com/mashling/circuitbreaker",
+              "activityRef": "github.com/mashling/httpactivity",
               "attributes": [
                 {
                   "name": "serviceName",
