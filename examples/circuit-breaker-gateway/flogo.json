@@ -322,14 +322,14 @@
               "from": "rest_2",
               "to": "circuitbreaker_2",
               "type": 1,
-              "value": "$activity[rest_2].response.netError == ''"
+              "value": "$activity[rest_2].netError == ''"
             },
             {
               "id": 3,
               "from": "rest_2",
               "to": "circuitbreaker_1",
               "type": 1,
-              "value": "$activity[rest_2].response.netError != ''"
+              "value": "$activity[rest_2].netError != ''"
             },
             {
               "id": 4,

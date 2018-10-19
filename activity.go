@@ -97,7 +97,7 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 // InitializeCircuitBreaker creates a circuit breaker service
 func (f *Factory) Make(name string, settings map[string]interface{}) (registry.Service, error) {
 	circuit := &CircuitBreaker{
-		mode:      "a",
+		mode:      CircuitBreakerModeA,
 		threshold: 5,
 		period:    60 * time.Second,
 		timeout:   60 * time.Second,
@@ -294,7 +294,7 @@ func (c *CircuitBreakerContexts) GetContext(context string, threshold int) *Circ
 // UpdateRequest updates the circuit breaker service
 func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error) {
 	for k, v := range values {
-		if v == nil {
+		if v == nil || v == "" || v == 0{
 			continue
 		}
 		switch k {
@@ -303,8 +303,6 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			if !ok {
 				return errors.New("mode is not a string")
 			}
-			fmt.Println("value:",mode)
-
 			switch mode {
 			case CircuitBreakerModeA:
 			case CircuitBreakerModeB:
@@ -313,49 +311,38 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			default:
 				return errors.New("invalid mode")
 			}
-			if c.mode == "" {
-				c.mode = v
-			}
+			c.mode = mode
 		case "operation":
 			operation, ok := v.(string)
 			if !ok {
 				return errors.New("operation is not a string")
 			}
-			if c.operation == "" {
-				c.operation = operation
-			}
+
+			c.operation = operation
 		case "context":
 			context, ok := v.(string)
 			if !ok {
 				return errors.New("context is not a string")
 			}
-			if c.context == "" {
-				c.context = context
-			}
+			c.context = context
 		case "threshold":
 			threshold, ok := v.(int)
 			if !ok {
 				return errors.New("threshold is not a number")
 			}
-			if c.threshold == 0 {
-				c.threshold = int(threshold)
-			}
+			c.threshold = int(threshold)
 		case "timeout":
 			timeout, ok := v.(int)
 			if !ok {
 				return errors.New("timeout is not a number")
 			}
-			if c.timeout == 0 {
-				c.timeout = time.Duration(timeout) * time.Second
-			}
+			c.timeout = time.Duration(timeout) * time.Second
 		case "period":
 			period, ok := v.(int)
 			if !ok {
 				return errors.New("period is not a number")
 			}
-			if c.period == 0 {
-				c.period = time.Duration(period) * time.Second
-			}
+			c.period = time.Duration(period) * time.Second
 		}
 	}
 	return nil
