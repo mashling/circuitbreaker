@@ -449,14 +449,14 @@
               "from": "circuitbreaker_1",
               "to": "circuitbreaker_tripped",
               "type": 1,
-              "value": "$activity[circuitbreaker_1].Tripped == 'true'"
+              "value": "$activity[circuitbreaker_1].tripped == true"
             },
             {
               "id": 5,
               "from": "circuitbreaker_2",
               "to": "circuitbreaker_tripped",
               "type": 1,
-              "value": "$activity[circuitbreaker_2].Tripped == 'true'"
+              "value": "$activity[circuitbreaker_2].tripped == true"
             },
             {
               "id": 6,
