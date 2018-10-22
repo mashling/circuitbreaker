@@ -274,7 +274,43 @@
               ]
             },
             {
-              "id": "reply_1",
+              "id": "circuitbreaker_tripped",
+              "name": "Reply (Legacy)",
+              "description": "if circuit breaker is tripped",
+              "type": 1,
+              "activityType": "tibco-reply",
+              "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+              "attributes": [
+                {
+                  "name": "statusCode",
+                  "value": 0,
+                  "required": true,
+                  "type": "integer"
+                },
+                {
+                  "name": "body",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                }
+              ],
+              "input": {
+                "mappings": [
+                  {
+                    "type": 1,
+                    "value": "$activity[rest_2].statusCode",
+                    "mapTo": "code"
+                  },
+                  {
+                    "type": 1,
+                    "value": "circuit breaker tripped",
+                    "mapTo": "data"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "reply_success",
               "name": "Reply (Legacy)",
               "description": "Simple Reply for success response",
               "type": 1,
@@ -308,6 +344,83 @@
                   }
                 ]
               }
+            },
+            {
+              "id": "reply_failure",
+              "name": "Reply (Legacy)",
+              "description": "Reply for failure data not available",
+              "type": 1,
+              "activityType": "tibco-reply",
+              "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+              "attributes": [
+                {
+                  "name": "statusCode",
+                  "value": 0,
+                  "required": true,
+                  "type": "integer"
+                },
+                {
+                  "name": "body",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                }
+              ],
+              "input": {
+                "mappings": [
+                  {
+                    "type": 1,
+                    "value": "$activity[rest_2].statusCode",
+                    "mapTo": "code"
+                  },
+                  {
+                    "type": 1,
+                    "value": "$activity[rest_2].body",
+                    "mapTo": "data"
+                  },
+                  {
+                    "type": 1,
+                    "value": "Pet is unavailable",
+                    "mapTo": "data"
+                  }
+                ]
+              }
+            },
+            {
+              "id": "error_response",
+              "name": "Reply (Legacy)",
+              "description": "Simple error response for circuit breaker",
+              "type": 1,
+              "activityType": "tibco-reply",
+              "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
+              "attributes": [
+                {
+                  "name": "statusCode",
+                  "value": 0,
+                  "required": true,
+                  "type": "integer"
+                },
+                {
+                  "name": "body",
+                  "value": null,
+                  "required": false,
+                  "type": "any"
+                }
+              ],
+              "input": {
+                "mappings": [
+                  {
+                    "type": 1,
+                    "value": 403,
+                    "mapTo": "code"
+                  },
+                  {
+                    "type": 1,
+                    "value": "connection failure",
+                    "mapTo": "data"
+                  }
+                ]
+              }
             }
           ],
           "links": [
@@ -334,16 +447,50 @@
             {
               "id": 4,
               "from": "circuitbreaker_1",
-              "to": "reply_1",
+              "to": "circuitbreaker_tripped",
               "type": 1,
-              "value": "$activity[rest_2].body.status == 'available'"
+              "value": "$activity[circuitbreaker_1].Tripped == 'true'"
             },
             {
               "id": 5,
               "from": "circuitbreaker_2",
-              "to": "reply_1",
+              "to": "circuitbreaker_tripped",
+              "type": 1,
+              "value": "$activity[circuitbreaker_2].Tripped == 'true'"
+            },
+            {
+              "id": 6,
+              "from": "circuitbreaker_1",
+              "to": "reply_success",
               "type": 1,
               "value": "$activity[rest_2].body.status == 'available'"
+            },
+            {
+              "id": 7,
+              "from": "circuitbreaker_2",
+              "to": "reply_success",
+              "type": 1,
+              "value": "$activity[rest_2].body.status == 'available'"
+            },
+            {
+              "id": 8,
+              "from": "circuitbreaker_1",
+              "to": "reply_failure",
+              "type": 1,
+              "value": "$activity[rest_2].body.status != 'available'"
+            },
+            {
+              "id": 9,
+              "from": "circuitbreaker_2",
+              "to": "reply_failure",
+              "type": 1,
+              "value": "$activity[rest_2].body.status != 'available'"
+            },
+            {
+              "id": 10,
+              "from": "reply_failure",
+              "to": "error_response",
+              "type": 0
             }
           ],
           "attributes": []
