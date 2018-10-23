@@ -78,7 +78,6 @@ func (f *CircuitBreakerActivity) Eval(context activity.Context) (done bool, err 
 		ivThreshold: context.GetInput(ivThreshold),
 		ivPeriod:    context.GetInput(ivPeriod),
 		ivTimeout:   context.GetInput(ivTimeout),
-		//ivTripped:      context.GetInput(ivTripped),
 	}
 	factory := Factory{}
 	service, err := factory.Make(serviceName, settings)

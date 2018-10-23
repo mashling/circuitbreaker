@@ -120,7 +120,7 @@
                 },
                 {
                   "name": "url",
-                  "value": "http://petstore.swagger.io/v2/pet/:petId",
+                  "value": "http://localhost:8080/pets",
                   "required": true,
                   "type": "string"
                 },
@@ -289,7 +289,7 @@
                 },
                 {
                   "name": "body",
-                  "value": null,
+                  "value": "circuit breaker tripped",
                   "required": false,
                   "type": "any"
                 }
@@ -300,11 +300,6 @@
                     "type": 1,
                     "value": "$activity[rest_2].statusCode",
                     "mapTo": "code"
-                  },
-                  {
-                    "type": 1,
-                    "value": "circuit breaker tripped",
-                    "mapTo": "data"
                   }
                 ]
               }
@@ -377,11 +372,6 @@
                     "type": 1,
                     "value": "$activity[rest_2].body",
                     "mapTo": "data"
-                  },
-                  {
-                    "type": 1,
-                    "value": "Pet is unavailable",
-                    "mapTo": "data"
                   }
                 ]
               }
@@ -402,7 +392,7 @@
                 },
                 {
                   "name": "body",
-                  "value": null,
+                  "value": "connection failure",
                   "required": false,
                   "type": "any"
                 }
@@ -413,11 +403,6 @@
                     "type": 1,
                     "value": 403,
                     "mapTo": "code"
-                  },
-                  {
-                    "type": 1,
-                    "value": "connection failure",
-                    "mapTo": "data"
                   }
                 ]
               }
@@ -488,9 +473,17 @@
             },
             {
               "id": 10,
-              "from": "reply_failure",
+              "from": "circuitbreaker_1",
               "to": "error_response",
-              "type": 0
+              "type": 1,
+              "value": "$activity[rest_2].netError == true"
+            },
+            {
+              "id": 11,
+              "from": "circuitbreaker_2",
+              "to": "error_response",
+              "type": 1,
+              "value": "$activity[rest_2].netError == true"
             }
           ],
           "attributes": []
