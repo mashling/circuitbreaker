@@ -288,7 +288,7 @@
                   "type": "integer"
                 },
                 {
-                  "name": "body",
+                  "name": "data",
                   "value": "circuit breaker tripped",
                   "required": false,
                   "type": "any"
@@ -385,13 +385,13 @@
               "activityRef": "github.com/TIBCOSoftware/flogo-contrib/activity/actreply",
               "attributes": [
                 {
-                  "name": "statusCode",
+                  "name": "code",
                   "value": 403,
                   "required": true,
                   "type": "integer"
                 },
                 {
-                  "name": "body",
+                  "name": "data",
                   "value": "connection failure",
                   "required": false,
                   "type": "any"
