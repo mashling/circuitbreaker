@@ -297,9 +297,14 @@
               "input": {
                 "mappings": [
                   {
-                    "type": 1,
-                    "value": "$activity[rest_2].statusCode",
+                    "type": 2,
+                    "value": 403,
                     "mapTo": "code"
+                  },
+                  {
+                    "type": 2,
+                    "value": "circuit breaker tripped",
+                    "mapTo": "data"
                   }
                 ]
               }
@@ -407,7 +412,8 @@
               "id": 1,
               "from": "circuitbreaker",
               "to": "rest_2",
-              "type": 0
+              "type": 1,
+              "value": "$activity[circuitbreaker].tripped == false"
             },
             {
               "id": 2,
@@ -425,10 +431,10 @@
             },
             {
               "id": 4,
-              "from": "circuitbreaker_1",
+              "from": "circuitbreaker",
               "to": "circuitbreaker_tripped",
               "type": 1,
-              "value": "$activity[circuitbreaker_1].tripped == true"
+              "value": "$activity[circuitbreaker].tripped == true"
             },
             {
               "id": 5,
