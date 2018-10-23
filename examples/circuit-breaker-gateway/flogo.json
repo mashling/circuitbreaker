@@ -288,8 +288,8 @@
                   "type": "integer"
                 },
                 {
-                  "name": "data",
-                  "value": "circuit breaker tripped",
+                  "name": "body",
+                  "value": null,
                   "required": false,
                   "type": "any"
                 }
@@ -391,19 +391,30 @@
               "attributes": [
                 {
                   "name": "code",
-                  "value": 403,
+                  "value": 0,
                   "required": true,
                   "type": "integer"
                 },
                 {
                   "name": "data",
-                  "value": "connection failure",
+                  "value": null,
                   "required": false,
                   "type": "any"
                 }
               ],
               "input": {
-                "mappings": []
+                "mappings": [
+                  {
+                    "type": 2,
+                    "value": 403,
+                    "mapTo": "code"
+                  },
+                  {
+                    "type": 2,
+                    "value": "error in connection",
+                    "mapTo": "data"
+                  }
+                ]
               }
             }
           ],
@@ -446,40 +457,47 @@
             {
               "id": 6,
               "from": "circuitbreaker_1",
-              "to": "reply_success",
+              "to": "circuitbreaker_tripped",
               "type": 1,
-              "value": "$activity[rest_2].body != null"
+              "value": "$activity[circuitbreaker_1].tripped == true"
             },
             {
               "id": 7,
-              "from": "circuitbreaker_2",
+              "from": "circuitbreaker_1",
               "to": "reply_success",
               "type": 1,
               "value": "$activity[rest_2].body != null"
             },
             {
               "id": 8,
-              "from": "circuitbreaker_1",
-              "to": "reply_failure",
+              "from": "circuitbreaker_2",
+              "to": "reply_success",
               "type": 1,
-              "value": "$activity[rest_2].body == null"
+              "value": "$activity[rest_2].body != null"
             },
             {
               "id": 9,
-              "from": "circuitbreaker_2",
+              "from": "circuitbreaker_1",
               "to": "reply_failure",
               "type": 1,
               "value": "$activity[rest_2].body == null"
             },
             {
               "id": 10,
+              "from": "circuitbreaker_2",
+              "to": "reply_failure",
+              "type": 1,
+              "value": "$activity[rest_2].body == null"
+            },
+            {
+              "id": 11,
               "from": "circuitbreaker_1",
               "to": "error_response",
               "type": 1,
               "value": "$activity[rest_2].netError != ''"
             },
             {
-              "id": 11,
+              "id": 12,
               "from": "circuitbreaker_2",
               "to": "error_response",
               "type": 1,
