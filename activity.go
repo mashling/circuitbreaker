@@ -115,6 +115,7 @@ func (c *CircuitBreaker) Execute() (err error) {
 	}
 
 	context, now := circuitBreakerContexts.GetContext(c.context, c.threshold), now()
+
 	switch c.operation {
 	case "counter":
 		context.Lock()
@@ -171,7 +172,7 @@ func (c *CircuitBreaker) Execute() (err error) {
 			context.RUnlock()
 			if timeout.Sub(now) > 0 {
 				c.Tripped = true
-				return ErrorCircuitBreakerTripped
+				return nil
 			}
 		case CircuitBreakerModeD:
 			context.RLock()
@@ -182,7 +183,7 @@ func (c *CircuitBreaker) Execute() (err error) {
 				context.AddRecord(CircuitBreakerUnknown, now)
 				context.Unlock()
 				c.Tripped = true
-				return ErrorCircuitBreakerTripped
+				return nil
 			}
 		}
 	}
@@ -311,7 +312,6 @@ func (c *CircuitBreaker) UpdateRequest(values map[string]interface{}) (err error
 			if !ok {
 				return errors.New("operation is not a string")
 			}
-
 			c.operation = operation
 		case "context":
 			context, ok := v.(string)

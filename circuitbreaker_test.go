@@ -1,10 +1,10 @@
 package circuitbreaker
 
 import (
+	"math"
 	"math/rand"
 	"testing"
 	"time"
-	"math"
 )
 
 func TestCircuitBreakerModeA(t *testing.T) {
@@ -19,8 +19,7 @@ func TestCircuitBreakerModeA(t *testing.T) {
 		now = time.Now
 	}()
 
-
-	execute := func(serviceName string,values map[string]interface{}, should error) {
+	execute := func(serviceName string, values map[string]interface{}, should error) {
 		factory := Factory{}
 		breaker, err := factory.Make(serviceName, values)
 		if err != nil {
@@ -42,32 +41,31 @@ func TestCircuitBreakerModeA(t *testing.T) {
 	}
 
 	for i := 0; i < 4; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
-	execute("reset",nil, nil)
-	execute("reset",map[string]interface{}{"operation": "reset"}, nil)
+	execute("reset", nil, nil)
+	execute("reset", map[string]interface{}{"operation": "reset"}, nil)
 
 	for i := 0; i < 5; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
-	execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+	execute("reset", nil, nil)
+	execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
+	execute("reset", nil, nil)
 }
-
 
 func TestCircuitBreakerModeB(t *testing.T) {
 	rand.Seed(1)
@@ -81,7 +79,7 @@ func TestCircuitBreakerModeB(t *testing.T) {
 		now = time.Now
 	}()
 
-	execute := func(serviceName string,values map[string]interface{}, should error) {
+	execute := func(serviceName string, values map[string]interface{}, should error) {
 		factory := Factory{}
 		breaker, err := factory.Make(serviceName, values)
 		if err != nil {
@@ -104,29 +102,29 @@ func TestCircuitBreakerModeB(t *testing.T) {
 	}
 
 	for i := 0; i < 4; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
 	clock = clock.Add(60 * time.Second)
 
 	for i := 0; i < 5; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
-	execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+	execute("reset", nil, nil)
+	execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
+	execute("reset", nil, nil)
 }
 
 func TestCircuitBreakerModeC(t *testing.T) {
@@ -141,7 +139,7 @@ func TestCircuitBreakerModeC(t *testing.T) {
 		now = time.Now
 	}()
 
-	execute := func(serviceName string,values map[string]interface{}, should error) {
+	execute := func(serviceName string, values map[string]interface{}, should error) {
 		factory := Factory{}
 		breaker, err := factory.Make(serviceName, values)
 		if err != nil {
@@ -164,37 +162,37 @@ func TestCircuitBreakerModeC(t *testing.T) {
 	}
 
 	for i := 0; i < 4; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
 	clock = clock.Add(60 * time.Second)
 
 	for i := 0; i < 4; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
-	execute("reset",nil, nil)
-	execute("reset",map[string]interface{}{"operation": "reset"}, nil)
+	execute("reset", nil, nil)
+	execute("reset", map[string]interface{}{"operation": "reset"}, nil)
 
 	for i := 0; i < 5; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 	}
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
-	execute("reset",map[string]interface{}{"operation": "counter"}, nil)
+	execute("reset", nil, nil)
+	execute("reset", map[string]interface{}{"operation": "counter"}, nil)
 
-	execute("reset",nil, ErrorCircuitBreakerTripped)
+	execute("reset", nil, ErrorCircuitBreakerTripped)
 
 	clock = clock.Add(60 * time.Second)
 
-	execute("reset",nil, nil)
+	execute("reset", nil, nil)
 }
 
 func TestCircuitBreakerModeD(t *testing.T) {
@@ -233,8 +231,8 @@ func TestCircuitBreakerModeD(t *testing.T) {
 	}
 
 	for i := 0; i < 100; i++ {
-		execute("reset",nil, nil)
-		execute("reset",map[string]interface{}{"operation": "reset"}, nil)
+		execute("reset", nil, nil)
+		execute("reset", map[string]interface{}{"operation": "reset"}, nil)
 	}
 	p := circuitBreakerContexts.GetContext("testD", 5).Probability(now())
 	if math.Floor(p*100) != 0.0 {
@@ -255,11 +253,11 @@ func TestCircuitBreakerModeD(t *testing.T) {
 		{ErrorCircuitBreakerTripped, nil},
 	}
 	for _, test := range tests {
-		err := execute("reset",nil, test.a)
+		err := execute("reset", nil, test.a)
 		if err != nil {
 			continue
 		}
-		execute("reset",map[string]interface{}{"operation": "counter"}, test.b)
+		execute("reset", map[string]interface{}{"operation": "counter"}, test.b)
 	}
 
 	tests = []Test{
@@ -270,11 +268,11 @@ func TestCircuitBreakerModeD(t *testing.T) {
 		{nil, nil},
 	}
 	for _, test := range tests {
-		err := execute("reset",nil, test.a)
+		err := execute("reset", nil, test.a)
 		if err != nil {
 			continue
 		}
-		execute("reset",map[string]interface{}{"operation": "reset"}, test.b)
+		execute("reset", map[string]interface{}{"operation": "reset"}, test.b)
 	}
 	p = circuitBreakerContexts.GetContext("testD", 5).Probability(now())
 	if math.Floor(p*100) != 0.0 {
