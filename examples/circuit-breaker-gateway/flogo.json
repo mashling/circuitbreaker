@@ -391,19 +391,30 @@
               "attributes": [
                 {
                   "name": "code",
-                  "value": 403,
+                  "value": 0,
                   "required": true,
                   "type": "integer"
                 },
                 {
-                  "name": "data",
-                  "value": "connection failure",
+                  "name": "body",
+                  "value": null,
                   "required": false,
                   "type": "any"
                 }
               ],
               "input": {
-                "mappings": []
+                "mappings": [
+                  {
+                    "type": 2,
+                    "value": 403,
+                    "mapTo": "code"
+                  },
+                  {
+                    "type": 2,
+                    "value": "connection failure",
+                    "mapTo": "data"
+                  }
+                ]
               }
             }
           ],

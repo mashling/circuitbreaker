@@ -46,12 +46,12 @@ curl http://localhost:9096/pets/4
 
 You should see the below response 5 times:
 ```
- "error": "connection failure"
+ "connection failure"
 ```
 
 Followed by:
 ```
- "error": "circuit breaker tripped"
+"circuit breaker tripped"
 ```
 
 The circuit breaker is now in the tripped state.
