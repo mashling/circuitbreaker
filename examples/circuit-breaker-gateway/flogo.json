@@ -386,7 +386,7 @@
               "attributes": [
                 {
                   "name": "statusCode",
-                  "value": 0,
+                  "value": 403,
                   "required": true,
                   "type": "integer"
                 },
@@ -398,13 +398,7 @@
                 }
               ],
               "input": {
-                "mappings": [
-                  {
-                    "type": 1,
-                    "value": 403,
-                    "mapTo": "code"
-                  }
-                ]
+                "mappings": []
               }
             }
           ],
@@ -448,42 +442,42 @@
               "from": "circuitbreaker_1",
               "to": "reply_success",
               "type": 1,
-              "value": "$activity[rest_2].body.status == 'available'"
+              "value": "$activity[rest_2].body != null"
             },
             {
               "id": 7,
               "from": "circuitbreaker_2",
               "to": "reply_success",
               "type": 1,
-              "value": "$activity[rest_2].body.status == 'available'"
+              "value": "$activity[rest_2].body != null"
             },
             {
               "id": 8,
               "from": "circuitbreaker_1",
               "to": "reply_failure",
               "type": 1,
-              "value": "$activity[rest_2].body.status != 'available'"
+              "value": "$activity[rest_2].body == null"
             },
             {
               "id": 9,
               "from": "circuitbreaker_2",
               "to": "reply_failure",
               "type": 1,
-              "value": "$activity[rest_2].body.status != 'available'"
+              "value": "$activity[rest_2].body == null"
             },
             {
               "id": 10,
               "from": "circuitbreaker_1",
               "to": "error_response",
               "type": 1,
-              "value": "$activity[rest_2].netError == true"
+              "value": "$activity[rest_2].netError != ''"
             },
             {
               "id": 11,
               "from": "circuitbreaker_2",
               "to": "error_response",
               "type": 1,
-              "value": "$activity[rest_2].netError == true"
+              "value": "$activity[rest_2].netError != ''"
             }
           ],
           "attributes": []
